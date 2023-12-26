@@ -2,9 +2,13 @@ var firstName= prompt("Enter your first Name :")
 var lastName= prompt("Enter your last Name :")
 var fullName= `${firstName} ${lastName}`
 
+var confirm= prompt(`Is ${fullName} your fullname?(yes | no)`)
+if(confirm!="yes"){
+    fullName=`No Name ;)`
+}
 var age =Number(prompt("Enter your birth year: "))
 
-document.write(`Welcome, ${fullName}.\nYou are ${2023-age} years old.`)
+document.write(`Welcome, ${fullName}. You are ${2023-age} years old.`)
 document.write(`<br>`)
 
 
