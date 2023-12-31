@@ -2,8 +2,8 @@ var firstName= prompt("Enter your first Name :")
 var lastName= prompt("Enter your last Name :")
 var fullName= `${firstName} ${lastName}`
 
-var confirm= prompt(`Is ${fullName} your fullname?(yes | no)`)
-if(confirm!="yes"){
+var confirm= confirm(`Is ${fullName} your fullname?`)
+if(!confirm){
     fullName=`No Name ;)`
 }
 var age =Number(prompt("Enter your birth year: "))
