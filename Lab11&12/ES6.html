@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ES6 Problems</title>
+</head>
+
+<body>
+    <div></div>
+    <div></div>
+    <div></div>
+    <script>
+        // Problem1
+        function compareProperty(obj1, obj2) {
+            if (Object.keys(obj1).length != Object.keys(obj2).length)
+                return false;
+            else {
+                for (let i of Object.keys(obj1)) {
+                    if (obj1[i] != obj2[i])
+                        return false;
+                }
+            }
+            return true;
+        }
+
+        var obj1 = {
+            "name": "Ali",
+            "age": 22
+        }
+
+        var obj2 = {
+            "name": "Ali",
+            "age": 22
+        }
+
+        var obj3 = {
+            "name": "Ali",
+            "age": 22,
+            "email": "x@y.z"
+        }
+
+        console.log(compareProperty(obj1, obj2));
+        console.log(compareProperty(obj1, obj3));
+
+        // Problem3
+        function csvTo2D(csv) {
+            let lines = csv.split("\n");
+            let final = [];
+            lines.forEach(element => {
+                final.push(element.split(","));
+            });
+            return final;
+        }
+
+        let csv = "Ali,22\nMona,23\nZein,26\nMai,21";
+        console.log(csvTo2D(csv));
+
+        // Problem4
+        function csvTo2D(csv) {
+            let lines = csv.split("\n");
+            let titles = lines[0].split(",");
+            let final = [];
+
+            for (let i = 1; i < lines.length; i++) {
+                let rows = lines[i].split(",");
+                obj4 = {};
+
+                titles.forEach((element, index) => {
+                    obj4[element] = rows[index];
+                });
+                final.push(obj4);
+            }
+            return final;
+        }
+
+        let csv2 = "name,age\nAli,22\nMona,23\nZein,26\nMai,21";
+        console.log(csvTo2D(csv2));
+
+        // Problem5
+        function array2DToCsv(array) {
+            let final = Object.keys(array[0]).join(",");
+            final = final.concat("\n");
+            for (let i = 0; i < array.length; i++) {
+                final = final.concat(Object.values(array[i]).join(","));
+                final = final.concat("\n");
+            }
+
+            return final;
+        }
+
+        var arr = [
+            {
+                name: "Ali",
+                age: 22
+            },
+            {
+                name: "Mona",
+                age: 23
+            }
+        ]
+
+        console.log(array2DToCsv(arr));
+
+        // Problem6
+        const targetNestedValue = (obj, key) => {
+            let result;
+            Object.keys(obj).some(k => {
+                if (k === key) {
+                    result = obj[k];
+                    return true;
+                }
+                if (obj[k] && typeof obj[k] === 'object') {
+                    result = targetNestedValue(obj[k], key);
+                    return result !== undefined;
+                }
+                return false;
+            });
+            return result;
+        };
+
+        const obj6 = {
+            a: {
+                b: {
+                    c: 123
+                }
+            }
+        };
+        console.log(targetNestedValue(obj6, 'c'));
+
+        // Problem7
+        function numberToArray(number) {
+            return Array.from(String(number), Number);
+        }
+
+        console.log(numberToArray(12345));
+
+        // Problem8
+        function filterArray(arr, ...values) {
+            return arr.filter(item => !values.includes(item));
+        }
+
+        const arr8 = [1, 2, 3, 4, 5];
+        console.log(filterArray(arr8, 2, 4));
+
+        //Problem9
+        const combineNumbers = arr => arr.reduce((result, num) => result.concat(result.map(r => r.concat(num))), [[]]);
+
+        const arr9 = [1, 2, 3];
+        console.log(combineNumbers(arr9));
+
+        // Problem13
+        const stringLengthToBytes = (str) => new Blob([str]).size;
+
+        const str13 = "Hello, world!";
+        console.log(stringLengthToBytes(str13));
+
+        // Problem15
+        const minMaxWithComparator = (arr, comparator) => {
+            return arr.reduce((acc, val) => {
+                const comp = comparator(val);
+                return [Math.min(comp, acc[0]), Math.max(comp, acc[1])];
+            }, [Infinity, -Infinity]);
+        };
+
+        const arr15 = [1, 2, 3, 4, 5];
+        const comparator = (x) => x * x;
+        console.log(minMaxWithComparator(arr15, comparator));
+
+        // Problem17
+        const splitArraysByFilter = (arr1, arr2, filter) => {
+            return [arr1.filter((_, i) => filter[i]), arr2.filter((_, i) => !filter[i])];
+        };
+
+        const arr1 = [1, 2, 3, 4, 5];
+        const arr2 = ['a', 'b', 'c', 'd', 'e'];
+        const filter17 = [true, false, true, false, true];
+        console.log(splitArraysByFilter(arr1, arr2, filter17));
+
+        // Problem21
+        const everyNthElement = (arr, n) => arr.filter((_, i) => i % n === 0);
+
+        const arr21 = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+        console.log(everyNthElement(arr21, 3));
+
+        // Problem22
+        const filterNonUniqueValues = (arr) => arr.filter((value, index, self) => self.indexOf(value) === index);
+
+        const arr22 = [1, 2, 2, 3, 4, 4, 5];
+        console.log(filterNonUniqueValues(arr22));
+
+        // Problem23
+        const filterNonUniqueValuesWithComparator = (arr, comparator) => arr.filter((value, index, self) => self.findIndex(v => comparator(value, v)) === index);
+
+        const arr23 = [1, 2, 3, 4, 5];
+        const comparator23 = (a, b) => a % 2 === b % 2;
+        console.log(filterNonUniqueValuesWithComparator(arr23, comparator23));
+
+        // Problem24
+        const decapitalizeFirstLetter = (str) => str.charAt(0).toLowerCase() + str.slice(1);
+
+        const str24 = "Hello, World!";
+        console.log(decapitalizeFirstLetter(str24));
+
+
+        // Problem25
+        const createPairs = (arr1, arr2) => arr1.reduce((acc, val1) => acc.concat(arr2.map(val2 => [val1, val2])), []);
+
+        const arr125 = [1, 2];
+        const arr225 = ['a', 'b'];
+        console.log(createPairs(arr125, arr225));
+
+        //problem29
+        const toSafeInteger29 = (value) => {
+            const MIN_SAFE_INTEGER = Number.MIN_SAFE_INTEGER || -(Math.pow(2, 53) - 1);
+            const MAX_SAFE_INTEGER = Number.MAX_SAFE_INTEGER || Math.pow(2, 53) - 1;
+            return Math.max(Math.min(value, MAX_SAFE_INTEGER), MIN_SAFE_INTEGER) | 0;
+        };
+
+        console.log(toSafeInteger29(3.2));
+        console.log(toSafeInteger29(Infinity));
+
+        // Problem30
+        const filterValues = (arr, values) => arr.filter(val => !values.includes(val));
+
+        const arr30 = [1, 2, 3, 4, 5];
+        const values30 = [2, 4];
+        console.log(filterValues(arr30, values30));
+
+
+        // Problem34
+
+        const randomNumberInRange = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
+
+        console.log(randomNumberInRange(1, 10));
+
+        // Problem35
+        const randomIntegerInRange = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
+        const randomIntegersInRange = (n, min, max) => Array.from({ length: n }, () => randomIntegerInRange(min, max));
+
+        console.log(randomIntegersInRange(5, 1, 10));
+
+
+        // Problem38
+        const padString = (str, length, char) => {
+            const diff = length - str.length;
+            const leftPadding = char.repeat(Math.ceil(diff / 2));
+            const rightPadding = char.repeat(Math.floor(diff / 2));
+            return leftPadding + str + rightPadding;
+        };
+
+        const str38 = "Hello";
+        console.log(padString(str38, 10, "*"));
+
+        // Problem39
+        const removeKeys = (obj, keys) => {
+            keys.forEach(key => delete obj[key]);
+            return obj;
+        };
+
+        const obj39 = { a: 1, b: 2, c: 3 };
+        console.log(removeKeys(obj39, ['a', 'c']));
+
+        // Problem40
+        const objectToArray = (obj) => Object.keys(obj).map(key => [key, obj[key]]);
+
+        const obj40 = { a: 1, b: 2, c: 3 };
+        console.log(objectToArray(obj40))
+
+        // Problem46
+        const curry = (fn, arity = fn.length, ...args) =>
+            arity <= args.length ? fn(...args) : curry.bind(null, fn, arity, ...args);
+
+        const sum46 = (a, b, c) => a + b + c;
+        const curriedSum = curry(sum46);
+        console.log(curriedSum(1)(2)(3));
+
+        // Problem47
+        const deepEqual = (a, b) => {
+            if (a === b) return true;
+            if (typeof a !== 'object' || typeof b !== 'object' || a == null || b == null) return false;
+
+            const keysA = Object.keys(a);
+            const keysB = Object.keys(b);
+
+            if (keysA.length !== keysB.length) return false;
+
+            for (let key of keysA) {
+                if (!keysB.includes(key) || !deepEqual(a[key], b[key])) return false;
+            }
+
+            return true;
+        };
+
+        console.log(deepEqual({ a: 1, b: { c: 3 } }, { a: 1, b: { c: 3 } }));
+
+        // Problem48
+        const functionProperties = (obj, inherited = false) =>
+            (inherited ? [...Object.getOwnPropertyNames(obj)] : [...Object.keys(obj)])
+                .filter(key => typeof obj[key] === 'function');
+
+        const obj48 = {
+            a: 1,
+            b: () => { },
+            c: function () { }
+        };
+
+        console.log(functionProperties(obj48));
+
+        // Problem49
+        const getPropertiesBySelectors = (obj, selectors) =>
+            selectors.reduce((acc, selector) => {
+                acc[selector] = obj[selector];
+                return acc;
+            }, {});
+
+        const obj49 = {
+            a: 1,
+            b: 2,
+            c: 3
+        };
+
+        console.log(getPropertiesBySelectors(obj49, ['a', 'c']));
+
+        // Problem50
+        const integerToSuffixString = (num) => num + (num < 12 ? 'am' : 'pm');
+
+        console.log(integerToSuffixString(10));
+        console.log(integerToSuffixString(15));
+
+
+        //Problem51
+        const getUrlParameters = url =>
+            url.match(/([^?=&]+)(=([^&]*))/g).reduce(
+                (a, v) => ((a[v.slice(0, v.indexOf('='))] = v.slice(v.indexOf('=') + 1)), a), {}
+            );
+        console.log(getUrlParameters('http://url.com/page?name=Adam&age=20'));
+
+        //Problem53
+        const initialize2DArray = (rows, columns, value) =>
+            Array.from({ length: rows }, () => Array.from({ length: columns }, () => value));
+        console.log(initialize2DArray(2, 3, 0));
+
+        //Problem54
+        const initializeArrayWithRange = (start, end) =>
+            Array.from({ length: end - start + 1 }, (_, i) => start + i);
+        console.log(initializeArrayWithRange(1, 5));
+
+        //Problem56
+        const allEqual = arr => arr.every(val => val === arr[0]);
+        console.log(allEqual([1, 1, 1, 1]));
+
+        //Problem60
+        const invokeAtKey = (obj, key, ...args) =>
+            obj[key] ? obj[key](...args) : undefined;
+        console.log(invokeAtKey({ add: (a, b) => a + b }, 'add', 1, 2));
+
+        //Problem61
+        const castArray = val => (Array.isArray(val) ? val : [val]);
+        console.log(castArray('abc'));
+
+        //Problem64
+        const coalesce = (...args) => args.find(arg => ![undefined, null].includes(arg));
+        console.log(coalesce(null, undefined, '', 'abc'));
+
+        //Problem65
+        const colorize = (text, color) => `\x1b[${color}m${text}\x1b[0m`;
+        console.log(colorize('Hello, World!', 31));
+
+        //Problem70
+        const countOccurrences = (arr, value) =>
+            arr.reduce((acc, cur) => (cur === value ? acc + 1 : acc), 0);
+        console.log(countOccurrences([1, 2, 2, 3, 4, 2], 2));
+
+        //Problem73
+        const differenceWith = (arr1, arr2, fn) =>
+            arr1.filter(x => !arr2.some(y => fn(x, y)));
+        console.log(differenceWith([1, 2, 3], [1, 2, 4], (a, b) => a === b));
+
+        //Problem74
+        const filterFalsy = (arr, fn = Boolean) => arr.filter(fn);
+        console.log(filterFalsy([0, 1, false, true, '', 'abc']));
+
+        //Problem75
+        const eloRating = (ratings, kFactor = 32, ...results) =>
+            ratings.map((rating, i) =>
+                results.reduce((acc, result, j) => acc + kFactor * (result - 1 / (1 + 10 ** ((ratings[j] - rating) / 400))), 0)
+            );
+        console.log(eloRating([1200, 1600, 2000], 32, 1, 0, 0));
+
+        //Problem79
+        const longestItem = (...vals) => vals.reduce((a, b) => (a.length > b.length ? a : b));
+        console.log(longestItem('hello', [1, 2, 3], { a: 1, b: 2, c: 3 }));
+
+        // Problem 90
+        const nestObjects = (items, id = null, link = 'parent_id') =>
+            items.filter(item => item[link] === id).map(item => ({ ...item, children: nestObjects(items, item.id) }));
+
+        // Problem 91
+        const none = (arr, fn) => arr.every(val => !fn(val));
+
+        // Problem 92
+        const getArgument = (...args) => n => (n < 0 ? args[args.length + n] : args[n]);
+
+        // Problem 93
+        const removeEventListener = (element, event, handler) => element.removeEventListener(event, handler);
+
+        // Problem 94
+        const moveElementsToEnd = (arr, n) => arr.slice(n).concat(arr.slice(0, n));
+
+        // Problem 95        
+        const addEventListenerWithDelegation = (element, eventType, selector, handler) =>
+        element.addEventListener(eventType, event => {
+            if (event.target.matches(selector)) {
+                handler(event);
+            }
+        });
+
+        // Problem 96
+        const pick = (obj, keys) => keys.reduce((acc, key) => (key in obj ? { ...acc, [key]: obj[key] } : acc), {});
+
+        // Problem 97
+        const pickBy = (obj, fn) =>
+            Object.entries(obj).reduce((acc, [key, val]) => (fn(val, key) ? { ...acc, [key]: val } : acc), {});
+
+        // Problem 98
+        const filterObjects = (arr, fn, ...keys) =>
+            arr.map(obj =>
+                keys.reduce((acc, key) => (obj.hasOwnProperty(key) ? { ...acc, [key]: obj[key] } : acc), {})
+            ).filter(fn);
+
+        // Problem 99
+        const hashString = str =>
+            str.split('').reduce((acc, char) => {
+                const hash = (acc << 5) - acc + char.charCodeAt(0);
+                return hash & hash;
+            }, 0);
+
+        // Problem 100
+        const zip = (...arrays) => arrays[0].map((_, i) => arrays.map(array => array[i]));
+
+        // test 90-100
+        const items = [
+            { id: 1, parent_id: null },
+            { id: 2, parent_id: 1 },
+            { id: 3, parent_id: 1 },
+            { id: 4, parent_id: 2 },
+            { id: 5, parent_id: 3 }
+        ];
+
+        console.log(nestObjects(items, null, 'parent_id'));
+        console.log(none([1, 2, 3], x => x > 5));
+        console.log(getArgument('a', 'b', 'c')(1));
+        console.log(moveElementsToEnd([1, 2, 3, 4, 5], 2));
+        console.log(hashString('hello'));
+        console.log(zip([1, 2, 3], ['a', 'b', 'c'], [true, false, true]));
+
+
+        //Problem121
+        const toSafeInteger121 = (num) => Math.round(Math.max(Math.min(num, Number.MAX_SAFE_INTEGER), Number.MIN_SAFE_INTEGER));
+
+        console.log(toSafeInteger121(Infinity));
+
+        // Problem123
+        const toKebabCase = (str) => str.replace(/[A-Z]/g, (match) => `-${match.toLowerCase()}`);
+
+        console.log(toKebabCase('HelloWorld'));
+
+        // Problem125
+        const floatToDecimal = (num) => {
+            const decimalString = num.toFixed(10).replace(/(\d)(?=(\d{3})+\.)/g, '$1,');
+            return decimalString.replace(/[.,]0+$/, '');
+        };
+
+        console.log(floatToDecimal(12345.6789));
+
+        // Problem127
+        const iterateNTimes = (n, callback) => {
+            for (let i = 0; i < n; i++) {
+                callback(i);
+            }
+        };
+
+        iterateNTimes(5, (i) => console.log(`Iteration ${i}`));
+
+        // Problem129
+        const removeElementsUntil = (arr, predicate) => {
+            while (arr.length && !predicate(arr[arr.length - 1])) {
+                arr.pop();
+            }
+            return arr;
+        };
+
+        console.log(removeElementsUntil([1, 2, 3, 4, 5], (num) => num % 2 === 0));
+
+        // Problem131
+        const removeNElementsFromBeginning = (arr, n) => arr.slice(n);
+
+        console.log(removeNElementsFromBeginning([1, 2, 3, 4, 5], 2));
+
+        // Problem133
+        const symmetricDifferenceWith = (arr1, arr2, fn) => {
+            const set1 = new Set(arr1.map(fn));
+            const set2 = new Set(arr2.map(fn));
+            const diff = new Set([...set1].filter((x) => !set2.has(x)));
+            return [...diff];
+        };
+
+        console.log(symmetricDifferenceWith([1, 2, 3], [2, 3, 4], (x) => x % 2));
+
+        // Problem135
+        const sumOfPowers = (start, end, power) => {
+            let sum135 = 0;
+            for (let i = start; i <= end; i++) {
+                sum135 += Math.pow(i, power);
+            }
+            return sum135;
+        };
+
+        console.log(sumOfPowers(1, 5, 2));
+
+        // Problem137
+        const stableSort = (arr) => arr.map((item, index) => ({ item, index })).sort((a, b) => a.item - b.item || a.index - b.index).map(({ item }) => item);
+
+        console.log(stableSort([3, 1, 2, 3, 4, 2]));
+
+        // Problem139
+        const splitMultilineString = (str) => str.split(/\r?\n/);
+
+        console.log(splitMultilineString("Line 1\nLine 2\nLine 3"));
+
+        // Problem141
+        const getInsertionIndex = (arr, value) => {
+            let low = 0;
+            let high = arr.length - 1;
+
+            while (low <= high) {
+                let mid = Math.floor((low + high) / 2);
+                if (arr[mid] === value) return mid;
+                if (arr[mid] < value) low = mid + 1;
+                else high = mid - 1;
+            }
+
+            return low;
+        };
+
+        console.log(getInsertionIndex([1, 3, 5, 6], 5.5));
+
+        // Problem143
+        const sortAlphabetically = (str) => str.split('').sort().join('');
+
+        console.log(sortAlphabetically('hello'));
+
+        // Problem145
+        const randomizeArray = (arr) => arr.sort(() => Math.random() - 0.5);
+
+        console.log(randomizeArray([1, 2, 3, 4, 5]));
+
+        // Problem147
+        const serializeCookie = (name, value) => `${encodeURIComponent(name)}=${encodeURIComponent(value)}`;
+
+        console.log(serializeCookie('username', 'john_doe'));
+
+        // Problem149
+        const getRandomElement = (arr) => arr[Math.floor(Math.random() * arr.length)];
+
+        console.log(getRandomElement([1, 2, 3, 4, 5]));
+
+        // Problem151
+        const runInWebWorker = (fn) => {
+            const worker = new Worker(URL.createObjectURL(new Blob([`(${fn.toString()})()`])));
+            worker.onmessage = (e) => console.log('Result:', e.data);
+        };
+
+        runInWebWorker(() => {
+            let sum151 = 0;
+            for (let i = 0; i < 1000000000; i++) {
+                sum151 += i;
+            }
+            postMessage(sum151);
+        });
+
+        //Problem153
+        const reverseString = str => str.split('').reverse().join('');
+        console.log(reverseString('hello'));
+
+        //Problem156
+        const reduceArray = (arr, fn, initialValue) =>
+            arr.reduce((acc, val) => [...acc, fn(acc.slice(-1)[0], val)], [initialValue]);
+
+        const arr156 = [1, 2, 3, 4, 5];
+        const sum156 = reduceArray(arr156, (acc, val) => acc + val, 0);
+        console.log(sum156);
+
+        //Problem157
+        const redirectToUrl = url => { window.location.href = url; };
+        // redirectToUrl('https://www.google.com');
+
+
+        //Problem174
+        const nodeList = document.querySelectorAll('div');
+        const nodeListToArray = nodeList => Array.from(nodeList);
+        const array = nodeListToArray(nodeList);
+
+        //Problem178
+        function mergeObjects(obj1, obj2) {
+            return { ...obj1, ...obj2 };
+        }
+        const obj1178 = { a: 1, b: 2 };
+        const obj2178 = { b: 3, c: 4 };
+        console.log(mergeObjects(obj1178, obj2178));
+
+        //Problem179
+        function compareObjects(obj1, obj2) {
+            return JSON.stringify(obj1) === JSON.stringify(obj2);
+        }
+
+        const obj1179 = { a: 1, b: 2 };
+        const obj2179 = { a: 1, b: 2 };
+        console.log(compareObjects(obj1179, obj2179, (a, b) => a === b));
+
+
+        //Problem180
+        function keysToLowerCase(obj) {
+            const keys = Object.keys(obj);
+            const newObj = {};
+            keys.forEach(key => {
+                newObj[key.toLowerCase()] = obj[key];
+            });
+            return newObj;
+        }
+        const obj = { Name: 'John', Age: 30 };
+        console.log(keysToLowerCase(obj));
+
+
+        //Problem181
+        const getLastElement = arr => arr[arr.length - 1];
+        console.log(getLastElement([1, 2, 3]));
+
+        //Problem182
+        const joinWithSeparator = (arr, separator, endSeparator) =>
+            arr.length <= 1 ? arr.join('') : arr.slice(0, -1).join(separator) + endSeparator + arr.slice(-1);
+        console.log(joinWithSeparator(['apple', 'orange', 'banana'], ', ', ' and '));
+
+        //Problem183
+        const isValidJSON = str => {
+            try {
+                JSON.parse(str);
+                return true;
+            } catch (e) {
+                return false;
+            }
+        };
+        console.log(isValidJSON('{"name": "John", "age": 30}'));
+
+        //Problem184
+        const isUpperCase = str => str === str.toUpperCase();
+        console.log(isUpperCase('HELLO'));
+
+        //Problem185
+        const isUndefined = value => value === undefined;
+        console.log(isUndefined(undefined));
+
+        //Problem186
+        const isSymbol = value => typeof value === 'symbol';
+        console.log(isSymbol(Symbol.iterator));
+
+        //Problem187
+        const isString = value => typeof value === 'string';
+        console.log(isString('Hello'));
+
+        //Problem188
+        const isSorted = arr => {
+            const ascending = arr.slice().sort((a, b) => a - b);
+            const descending = arr.slice().sort((a, b) => b - a);
+            if (JSON.stringify(arr) === JSON.stringify(ascending)) return 1;
+            if (JSON.stringify(arr) === JSON.stringify(descending)) return -1;
+            return 0;
+        };
+        console.log(isSorted([1, 2, 3]));
+        console.log(isSorted([3, 2, 1]));
+        console.log(isSorted([1, 3, 2]));
+
+        //Problem189
+        const looksLikePromise = obj =>
+            obj && typeof obj.then === 'function' && typeof obj.catch === 'function';
+        console.log(looksLikePromise(new Promise(() => { })));
+
+        //Problem190
+        const isPrimitive = value => Object(value) !== value;
+        console.log(isPrimitive(5));
+        console.log(isPrimitive('Hello'));
+        console.log(isPrimitive([]));
+
+
+
+    </script>
+</body>
+
+</html>
